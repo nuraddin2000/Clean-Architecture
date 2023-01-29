@@ -1,0 +1,19 @@
+package com.test.cleanarchitecture.domain.use_case
+
+import com.test.cleanarchitecture.common.Resource
+import com.test.cleanarchitecture.domain.repository.ContactsDaoRepository
+import javax.inject.Inject
+
+class DeleteContactUseCase @Inject constructor(
+    private val repository: ContactsDaoRepository
+) {
+   suspend operator fun invoke(contactId: Int): Resource<Any> {
+       return try {
+            repository.deleteById(contactId)
+            Resource.Success()
+        } catch (e: Exception) {
+            e.printStackTrace()
+           Resource.Error(e.localizedMessage ?: "An unexpected error occured")
+        }
+    }
+}
